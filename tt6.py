@@ -100,6 +100,22 @@ while running:
             nTrials += 1
             print Color.WARNING + "\t" + current_time_str + "\tTONE_3 ON    trial #" + str(nTrials) + Color.END
 
+        if event == Event.TONE5_ON:
+            nTrials += 1
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_5 ON    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE6_ON:
+            nTrials += 1
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_6 ON    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE7_ON:
+            nTrials += 1
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_7 ON    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE8_ON:
+            nTrials += 1
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_8 ON    trial #" + str(nTrials) + Color.END
+
         # TONE OFF EVENTS
         if event == Event.TONE1_OFF:
             print Color.WARNING + "\t" + current_time_str + "\tTONE_1 OFF    trial #" + str(nTrials) + Color.END
@@ -109,6 +125,18 @@ while running:
 
         if event == Event.TONE3_OFF:
             print Color.WARNING + "\t" + current_time_str + "\tTONE_3 OFF    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE5_OFF:
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_5 OFF    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE6_OFF:
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_6 OFF    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE7_OFF:
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_7 OFF    trial #" + str(nTrials) + Color.END
+
+        if event == Event.TONE8_OFF:
+            print Color.WARNING + "\t" + current_time_str + "\tTONE_8 OFF    trial #" + str(nTrials) + Color.END
 
         # LICK EVENTS
         if event == Event.LICK:

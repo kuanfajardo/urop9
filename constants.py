@@ -35,6 +35,10 @@ class Event:
     TONE1_FREQ               = 22
     TONE1_DURATION           = 23
     TONE1_OFF                = 24
+    TONE5_ON                 = 21
+    TONE5_FREQ               = 22
+    TONE5_DURATION           = 23
+    TONE5_OFF                = 24
     TONE2_ON                 = 25
     TONE2_FREQ               = 26
     TONE2_DURATION           = 27
@@ -108,6 +112,10 @@ class Event:
     TONE3_FREQ               = 94
     TONE3_DURATION           = 95
     TONE3_OFF                = 96
+    TONE6_ON                 = 93
+    TONE6_FREQ               = 94
+    TONE6_DURATION           = 95
+    TONE6_OFF                = 96
     
     OFFER1_REW                = 97
     OFFER1_LIGHT              = 98
@@ -116,7 +124,22 @@ class Event:
     OFFER3_REW                = 101
     OFFER3_LIGHT              = 102
 
-    # BLOCK_NUMBER = 73
+    TONE7_ON                 = 103
+    TONE7_FREQ               = 104
+    TONE7_DURATION           = 105
+    TONE7_OFF                = 106
+    TONE8_ON                 = 107
+    TONE8_FREQ               = 108
+    TONE8_DURATION           = 109
+    TONE8_OFF                = 110
+
+    OFFER1_REW                = 111
+    OFFER1_LIGHT              = 112
+    OFFER2_REW                = 113
+    OFFER2_LIGHT              = 114
+
+
+# BLOCK_NUMBER = 73
     # CURRENT_BLOCK_NUMBER = 74
     # 
     # CUE_LIGHT_INTENSITY_1   = 75
