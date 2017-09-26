@@ -87,6 +87,7 @@ while running:
         current_time_str = str(h) + ":" + str(m) + ":" + str(s) + ":" + str(ms)
         event = c[1]
 
+        # TONE ON EVENTS
         if event == Event.TONE1_ON:
             nTrials += 1
             print Color.WARNING + "\t" + current_time_str + "\tTONE_1 ON    trial #" + str(nTrials) + Color.END
@@ -99,6 +100,7 @@ while running:
             nTrials += 1
             print Color.WARNING + "\t" + current_time_str + "\tTONE_3 ON    trial #" + str(nTrials) + Color.END
 
+        # TONE OFF EVENTS
         if event == Event.TONE1_OFF:
             print Color.WARNING + "\t" + current_time_str + "\tTONE_1 OFF    trial #" + str(nTrials) + Color.END
 
@@ -108,6 +110,7 @@ while running:
         if event == Event.TONE3_OFF:
             print Color.WARNING + "\t" + current_time_str + "\tTONE_3 OFF    trial #" + str(nTrials) + Color.END
 
+        # LICK EVENTS
         if event == Event.LICK:
             nLicks += 1
             print Color.OK_GREEN + "\t" + current_time_str + "\tLICK #" + str(nLicks) + Color.END
@@ -116,10 +119,7 @@ while running:
             nLicks += 1
             print Color.HEADER + "\t" + current_time_str + "\tDEC. val=" + value + Color.END
 
-        if event == "103":  # INTERRUPT
-            nInterrupts += 1
-            print Color.HEADER + "\t" + current_time_str + "\tinterrupt #" + value + Color.END
-
+        # RESPONSE EVENTS
         if event == Event.SOLENOID_ON:
             nRewards += 1
             print Color.OK_BLUE + "\t" + current_time_str + "\tREWARD #" + str(nRewards) + Color.END
@@ -128,6 +128,11 @@ while running:
             nLights += 1
             print Color.FAIL + "\t" + current_time_str + "\tLIGHT #" + str(nLights) + " " + str(int(value)) + " PWM" + \
                 Color.END
+
+        # OTHER EVENTS
+        if event == "103":  # INTERRUPT
+            nInterrupts += 1
+            print Color.HEADER + "\t" + current_time_str + "\tinterrupt #" + value + Color.END
 
         if event == Event.EXPERIMENT_STOP:
             running = False

@@ -1,6 +1,6 @@
 import os
 import serial  # library to read data from Arduino board through USB connection
-from time import strftime, localtime # Library to read the current date and time to create the output filename
+from time import strftime, localtime  # Library to read the current date and time to create the output filename
 
 
 def send_email(user, pwd, recipients, subject, body):
