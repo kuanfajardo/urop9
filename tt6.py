@@ -96,63 +96,63 @@ def get_filepaths(directory):
 
 def filenameAssistan(dataFolder):
 
-	# Run the above function and store its results in a variable.   
-	full_file_paths = get_filepaths(dataFolder)
+    # Run the above function and store its results in a variable.
+    full_file_paths = get_filepaths(dataFolder)
 
-	print "\t~~~~~~~~~~~~~~~~~~~~~~"	
-	print "\t~ Filename Assistant ~"	
-	print "\t~~~~~~~~~~~~~~~~~~~~~~"	
-	print ""	
-	mouse = raw_input("\tMouse : ")
-	if mouse == '':	
-		useFilename = 'No';
-	else:						
-		# Store Mouse Names
-		TaskList = [];
-		for f in full_file_paths:
-		  if f.endswith(".txt"):	
-				f2= f.split('/')
-				f2 = f2[len(f2)-1]
-				if f2.startswith(mouse):
-					f2 = f2.split('_')
-					if len(f2) == 5:
-						task=f2[1]	
-						if task not in TaskList:			
-							TaskList.append(task)							
-		i=0		
-		for t in TaskList:
-			print "\t["+ str(i) +"] "+ t
-			i+=1
-			
-		iTask = raw_input("\tTask : ");
-		taskToFind=TaskList[int(iTask)]
+    print "\t~~~~~~~~~~~~~~~~~~~~~~"
+    print "\t~ Filename Assistant ~"
+    print "\t~~~~~~~~~~~~~~~~~~~~~~"
+    print ""
+    mouse = raw_input("\tMouse : ")
+    if mouse == '':
+        useFilename = 'No';
+    else:
+        # Store Mouse Names
+        TaskList = [];
+        for f in full_file_paths:
+          if f.endswith(".txt"):
+                f2= f.split('/')
+                f2 = f2[len(f2)-1]
+                if f2.startswith(mouse):
+                    f2 = f2.split('_')
+                    if len(f2) == 5:
+                        task=f2[1]
+                        if task not in TaskList:
+                            TaskList.append(task)
+        i=0
+        for t in TaskList:
+            print "\t["+ str(i) +"] "+ t
+            i+=1
 
-		sessionList=[];
-		for f in full_file_paths:
-		  if f.endswith(".txt"):	
-				f2= f.split('/')
-				f2 = f2[len(f2)-1]
-				if f2.startswith(mouse):
-					f2 = f2.split('_')
-					if len(f2) == 5:
-						task=f2[1]	
-						if task == taskToFind:
-							#print f2
-							session=f2[2];
-							if session not in sessionList:			
-								sessionList.append(int(session))		
-		#print sessionList	
+        iTask = raw_input("\tTask : ");
+        taskToFind=TaskList[int(iTask)]
 
-		iSessionMax=max(sessionList)
+        sessionList=[];
+        for f in full_file_paths:
+          if f.endswith(".txt"):
+                f2= f.split('/')
+                f2 = f2[len(f2)-1]
+                if f2.startswith(mouse):
+                    f2 = f2.split('_')
+                    if len(f2) == 5:
+                        task=f2[1]
+                        if task == taskToFind:
+                            #print f2
+                            session=f2[2];
+                            if session not in sessionList:
+                                sessionList.append(int(session))
+        #print sessionList
 
-		newFilename = mouse + "_" +  taskToFind + "_%02d" %( iSessionMax+1)
-		useFilename= raw_input("\tDo you accept the following filename :" + newFilename + " (Y) ? ")
-		
-	if useFilename != 'Y':
-		newFilename= raw_input("\tEnter a new filename : ")
-	#print "\t" + newFilename
-	
-	return newFilename
+        iSessionMax=max(sessionList)
+
+        newFilename = mouse + "_" +  taskToFind + "_%02d" %( iSessionMax+1)
+        useFilename= raw_input("\tDo you accept the following filename :" + newFilename + " (Y) ? ")
+
+    if useFilename != 'Y':
+        newFilename= raw_input("\tEnter a new filename : ")
+    #print "\t" + newFilename
+
+    return newFilename
 
 
 ###################################################################
@@ -171,8 +171,8 @@ ser = serial.Serial(
 
 # Just in case the connection was still open from a previous execution of the program
 if ser.isOpen():
-	ser.close()
-	
+    ser.close()
+
 ser.open()
 # The arduino is waiting for input, so we can flush input
 # and ouput buffers at thea time for communication safety
@@ -213,13 +213,13 @@ print ""
 
 print "\tArduino Could You Hear Us ??"
 while running:
-	print "\tPC ==> Do You Wanna Go?"	
-	ser.write("Do You Wanna Go?")	
-	out = ser.readline()
-	out=out.strip() # to remove the end line char
-	print("\tARDUINO ==> " + out)
-	if out == responseShouldBe:
-		running = False		
+    print "\tPC ==> Do You Wanna Go?"
+    ser.write("Do You Wanna Go?")
+    out = ser.readline()
+    out=out.strip() # to remove the end line char
+    print("\tARDUINO ==> " + out)
+    if out == responseShouldBe:
+        running = False
 print("\tConnection with Arduino Established!");	
 print ""
 print ""
@@ -235,68 +235,68 @@ ms=0;
 
 running = True
 while running:
-	
-	if (ser.inWaiting() > 0):		
-		
-		#print "ser.inWaiting = " +str(ser.inWaiting())	
-		out = ser.readline()		
-		fo.write(out)
-		out.replace('\n','')
-		c = out.split("\t")
-		value = c[2]
-		value = value[:-1]		
-		# print c[0] + "-" + c[1] + "-" + c[2]				
-		ms=int(c[0]);
-		s=int(ms/1000);
-		h=int(s/3600);
-		s=s-(h*3600);
-		m=int(s/60);
-		s=s-(m*60);
-		ms = ms - (h*3600000) - (m*60000) - (s*1000);		
-		strCurrentTime = str(h) + ":" + str(m) + ":" + str(s) + ":" + str(ms);
-		if c[1]=="21": #TTL_EVT_TONE1_ON												
-			nTrials+=1	
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_1 ON    trial #" + str(nTrials) + bcolors.ENDC
-		if c[1]=="25": #TTL_EVT_TONE2_ON													
-			nTrials+=1	
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_2 ON    trial #" + str(nTrials) + bcolors.ENDC
-		if c[1]=="93": #TTL_EVT_TONE3_ON													
-			nTrials+=1	
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_3 ON    trial #" + str(nTrials) + bcolors.ENDC
-		if c[1]=="24": #TTL_EVT_TONE1_OFF													
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_1 OFF    trial #" + str(nTrials) + bcolors.ENDC
-		if c[1]=="28": #TTL_EVT_TONE2_OFF													
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_2 OFF    trial #" + str(nTrials) + bcolors.ENDC
-		if c[1]=="96": #TTL_EVT_TONE3_OFF													
-			print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_3 OFF    trial #" + str(nTrials) + bcolors.ENDC
-		elif c[1]=="13": #TTL_EVT_LICK
-			nLicks+=1	
-			print  bcolors.OKGREEN + "\t" + strCurrentTime + "\tLICK #" + str(nLicks) + bcolors.ENDC
-		elif c[1]=="91": #END OF DECISION
-			nLicks+=1	
-			print  bcolors.HEADER + "\t" + strCurrentTime + "\tDEC. val=" + value + bcolors.ENDC	
-		elif c[1]=="103": #INTERRPUT
-			nInterrupts+=1	
-			print  bcolors.HEADER + "\t" + strCurrentTime + "\tinterrupt #" + value + bcolors.ENDC
-		elif c[1]=="14": #TTL_EVT_SOLENOID_ON
-			nRewards+=1
-			print  bcolors.OKBLUE + "\t" + strCurrentTime + "\tREWARD #" + str(nRewards) + bcolors.ENDC		
-		elif c[1]=="18": #TTL_EVT_LED_PWM
-			nLights+=1			       
-			print  bcolors.FAIL   + "\t" + strCurrentTime + "\tLIGHT #" + str(nLights) + " " + str(int(value)) + " PWM" + bcolors.ENDC					
-		elif c[1]=="6": #TTL_EVT_EXPSTOP
-			running=False
-			print "Experiment Stoped By Arduino"					
-		#time.sleep(0.01)
-	else:
-		time.sleep(0.1)		
-		c=""
-		out=""
-		
+
+    if (ser.inWaiting() > 0):
+
+        #print "ser.inWaiting = " +str(ser.inWaiting())
+        out = ser.readline()
+        fo.write(out)
+        out.replace('\n','')
+        c = out.split("\t")
+        value = c[2]
+        value = value[:-1]
+        # print c[0] + "-" + c[1] + "-" + c[2]
+        ms=int(c[0]);
+        s=int(ms/1000);
+        h=int(s/3600);
+        s=s-(h*3600);
+        m=int(s/60);
+        s=s-(m*60);
+        ms = ms - (h*3600000) - (m*60000) - (s*1000);
+        strCurrentTime = str(h) + ":" + str(m) + ":" + str(s) + ":" + str(ms);
+        if c[1]=="21": #TTL_EVT_TONE1_ON
+            nTrials+=1
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_1 ON    trial #" + str(nTrials) + bcolors.ENDC
+        if c[1]=="25": #TTL_EVT_TONE2_ON
+            nTrials+=1
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_2 ON    trial #" + str(nTrials) + bcolors.ENDC
+        if c[1]=="93": #TTL_EVT_TONE3_ON
+            nTrials+=1
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_3 ON    trial #" + str(nTrials) + bcolors.ENDC
+        if c[1]=="24": #TTL_EVT_TONE1_OFF
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_1 OFF    trial #" + str(nTrials) + bcolors.ENDC
+        if c[1]=="28": #TTL_EVT_TONE2_OFF
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_2 OFF    trial #" + str(nTrials) + bcolors.ENDC
+        if c[1]=="96": #TTL_EVT_TONE3_OFF
+            print bcolors.WARNING + "\t" + strCurrentTime + "\tTONE_3 OFF    trial #" + str(nTrials) + bcolors.ENDC
+        elif c[1]=="13": #TTL_EVT_LICK
+            nLicks+=1
+            print  bcolors.OKGREEN + "\t" + strCurrentTime + "\tLICK #" + str(nLicks) + bcolors.ENDC
+        elif c[1]=="91": #END OF DECISION
+            nLicks+=1
+            print  bcolors.HEADER + "\t" + strCurrentTime + "\tDEC. val=" + value + bcolors.ENDC
+        elif c[1]=="103": #INTERRPUT
+            nInterrupts+=1
+            print  bcolors.HEADER + "\t" + strCurrentTime + "\tinterrupt #" + value + bcolors.ENDC
+        elif c[1]=="14": #TTL_EVT_SOLENOID_ON
+            nRewards+=1
+            print  bcolors.OKBLUE + "\t" + strCurrentTime + "\tREWARD #" + str(nRewards) + bcolors.ENDC
+        elif c[1]=="18": #TTL_EVT_LED_PWM
+            nLights+=1
+            print  bcolors.FAIL   + "\t" + strCurrentTime + "\tLIGHT #" + str(nLights) + " " + str(int(value)) + " PWM" + bcolors.ENDC
+        elif c[1]=="6": #TTL_EVT_EXPSTOP
+            running=False
+            print "Experiment Stoped By Arduino"
+        #time.sleep(0.01)
+    else:
+        time.sleep(0.1)
+        c=""
+        out=""
 
 
-	
-	
+
+
+
 ser.close()		
 fo.close()	 # 
 #const int TTL_EVT_TRIAL_STOP               = 8;Close opend file
