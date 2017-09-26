@@ -34,9 +34,9 @@ unsigned long afterDecisionDelayMsec    = 1000;
 unsigned long reponsePeriodDurationMsec = 1500;
 unsigned long consumptionPeriodMsec = 2000;
 
-/const int toneOneFreq                         = 4000;
-/const int toneTwoFreq                         = 8000;
-/const int toneThreeFreq                       = 12000;
+// const int toneOneFreq                         = 4000;
+// const int toneTwoFreq                         = 8000;
+// const int toneThreeFreq                       = 12000;
 
 const int toneFiveFreq                      = 8000;
 const int toneSixFreq                       = 7000;
@@ -312,15 +312,15 @@ void setup() {
     SendData(currentTimeMsec, TTL_EVT_MAX_REWARD_NUMBER, maxRewardNumber);
     SendData(currentTimeMsec, TTL_EVT_MAX_SESSION_DURATION, (int)(maxSessionDurationMsec / 1000));
     SendData(currentTimeMsec, TTL_EVT_TONE5_DURATION, toneDurationMsec);
-    SendData(currentTimeMsec, TTL_EVT_TONE5_FREQ, toneOneFreq);
+    SendData(currentTimeMsec, TTL_EVT_TONE5_FREQ, toneFiveFreq);
     SendData(currentTimeMsec, TTL_EVT_TONE6_DURATION, toneDurationMsec);
-    SendData(currentTimeMsec, TTL_EVT_TONE6_FREQ, toneTwoFreq);
+    SendData(currentTimeMsec, TTL_EVT_TONE6_FREQ, toneSixFreq);
     SendData(currentTimeMsec, TTL_EVT_TONE7_DURATION, toneDurationMsec);
-    SendData(currentTimeMsec, TTL_EVT_TONE7_FREQ, toneThreeFreq);
+    SendData(currentTimeMsec, TTL_EVT_TONE7_FREQ, toneSevenFreq);
     SendData(currentTimeMsec, TTL_EVT_TONE8_DURATION, toneDurationMsec);
-    SendData(currentTimeMsec, TTL_EVT_TONE8_FREQ, toneTwoFreq);
+    SendData(currentTimeMsec, TTL_EVT_TONE8_FREQ, toneEightFreq);
     SendData(currentTimeMsec, TTL_EVT_TONE2_DURATION, toneDurationMsec);
-    SendData(currentTimeMsec, TTL_EVT_TONE2_FREQ, toneThreeFreq);
+    SendData(currentTimeMsec, TTL_EVT_TONE2_FREQ, toneTwoFreq);
     SendData(currentTimeMsec, TTL_EVT_LED_VOLTAGE_MV, ledVoltage_mv);
 
     SendData(currentTimeMsec, TTL_EVT_OFFER1_REW, offer1_rew);
@@ -329,7 +329,7 @@ void setup() {
     SendData(currentTimeMsec, TTL_EVT_OFFER2_LIGHT, offer2_light);
     SendData(currentTimeMsec, TTL_EVT_OFFER3_REW, offer3_rew);
     SendData(currentTimeMsec, TTL_EVT_OFFER3_LIGHT, offer3_light);
-    SendData(currentTimeMsec, TTL_EVT_OFFER4_REW, offer2_rew);
+    SendData(currentTimeMsec, TTL_EVT_OFFER4_REW, offer2_rew); // TODO: Fix (and lines below)
     SendData(currentTimeMsec, TTL_EVT_OFFER4_LIGHT, offer2_light);
     SendData(currentTimeMsec, TTL_EVT_OFFER5_REW, offer3_rew);
     SendData(currentTimeMsec, TTL_EVT_OFFER5_LIGHT, offer3_light);
