@@ -23,14 +23,11 @@
 #  
 
 import time
-import serial  # library to read data from Arduino board through USB connection
-from time import localtime, strftime  # Library to read the current date and time to create the output filename
-
 from constants import Color, Event
 import utils
 
 # Variables Setup By User
-arduinoPort = '/dev/ttyACM9'
+arduino_port = '/dev/ttyACM9'
 box = '6'
 data_folder = "/home/snc-team/Dropbox (MIT)/SNc-Team/Behavior/Data/"
 
@@ -40,83 +37,37 @@ recipient = user
 subject = "box" + box + " done"
 body = subject
 
-
 ###################################################################
-
-
-# configure the serial connections check in the arduino editor menu the name of the port  
-# and the baudrate that are used to communicate with the arduino
-
-ser = serial.Serial(
-    port=arduinoPort,
-    baudrate=115200,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.SEVENBITS
-)
-
-# Just in case the connection was still open from a previous execution of the program
-if ser.isOpen():
-    ser.close()
-
-ser.open()
-# The arduino is waiting for input, so we can flush input
-# and output buffers at thea time for communication safety
-ser.flushInput() 
-ser.flushOutput()
-
-# Variable used to display behavioral  measure during acquisition
-nTrials = 0
-nRewards = 0
-nLights = 0
-nLicks = 0
-# nStim = 0
-nInterrupts = 0
-
-# Creation of the output filename and opening of the file
 
 print "\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 print "\t\t~ Behavioral Data Acquisition Software v1.0 ~"
 print "\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 print ""
 
-filename = utils.filename_assistant(data_folder)
-time_str = strftime("_%Y%m%d-%H%M", localtime())
-extension = "_box" + box + ".txt"
+# ---------------------
+#   Setup Experiment  |
+# ---------------------
 
-file_path = data_folder + filename + time_str + extension
+ser = utils.setup_serial(arduino_port)  # Creation of serial connection with Arduino
+fo = utils.open_file(data_folder, box)  # Creation of the output filename and opening of the file
+utils.establish_connection(ser)         # Establish connection with Arduino
 
-# print("Name = " + filename)
-
-fo = open(file_path, "w")
-
-expected_response = "Let's Go!"
-connected = False
-
-print ""
-print ""
-
-print "\tArduino Could You Hear Us ??"
-while not connected:
-    print "\tPC ==> Do You Wanna Go?"
-    ser.write("Do You Wanna Go?")
-    out = ser.readline()
-    out = out.strip()  # to remove the end line char
-    print("\tARDUINO ==> " + out)
-    if out == expected_response:
-        connected = True
-
-print("\tConnection with Arduino Established!")	
-print ""
-print ""
-print "\tExperiment Started"
 time.sleep(0.2)
+
+
+# ----------------------
+#   Begin Experiment!  |
+# ----------------------
+
+nTrials = 0
+nRewards = 0
+nLights = 0
+nLicks = 0
+nInterrupts = 0
 
 running = True
 while running:
-
     if ser.inWaiting() > 0:
-
         # print "ser.inWaiting = " +str(ser.inWaiting())
         out = ser.readline()
         fo.write(out)
@@ -186,6 +137,7 @@ while running:
 
     else:
         time.sleep(0.1)
+
 
 ser.close()
 fo.close()

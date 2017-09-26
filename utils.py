@@ -1,4 +1,6 @@
 import os
+import serial  # library to read data from Arduino board through USB connection
+from time import strftime, localtime # Library to read the current date and time to create the output filename
 
 
 def send_email(user, pwd, recipients, subject, body):
@@ -110,3 +112,65 @@ def filename_assistant(data_folder):
     # print "\t" + new_filename
 
     return new_filename
+
+
+def setup_serial(port):
+    # configure the serial connections check in the arduino editor menu the name of the port
+    # and the baudrate that are used to communicate with the arduino
+
+    ser = serial.Serial(
+        port=port,
+        baudrate=115200,
+        parity=serial.PARITY_ODD,
+        stopbits=serial.STOPBITS_TWO,
+        bytesize=serial.SEVENBITS
+    )
+
+    # Just in case the connection was still open from a previous execution of the program
+    if ser.isOpen():
+        ser.close()
+
+    ser.open()
+    # The arduino is waiting for input, so we can flush input
+    # and output buffers at thea time for communication safety
+    ser.flushInput()
+    ser.flushOutput()
+
+    return ser
+
+
+def open_file(data_folder, box):
+    filename = filename_assistant(data_folder)
+    time_str = strftime("_%Y%m%d-%H%M", localtime())
+    extension = "_box" + box + ".txt"
+
+    file_path = data_folder + filename + time_str + extension
+
+    # print("Name = " + filename)
+
+    fo = open(file_path, "w")
+
+    return fo
+
+
+def establish_connection(ser):
+    expected_response = "Let's Go!"
+    connected = False
+
+    print ""
+    print ""
+
+    print "\tArduino Could You Hear Us ??"
+    while not connected:
+        print "\tPC ==> Do You Wanna Go?"
+        ser.write("Do You Wanna Go?")
+        out = ser.readline()
+        out = out.strip()  # to remove the end line char
+        print("\tARDUINO ==> " + out)
+        if out == expected_response:
+            connected = True
+
+    print("\tConnection with Arduino Established!")
+    print ""
+    print ""
+    print "\tExperiment Started"
