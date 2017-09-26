@@ -241,413 +241,413 @@ void setup() {
 
 
 
-  //Defines Inputs and Outputs
-  pinMode(solenoidPin, OUTPUT);
-  digitalWrite(solenoidPin, LOW);
-  pinMode(toneOnePin, OUTPUT);
-  digitalWrite(toneOnePin, HIGH);
-  pinMode(toneTwoPin, OUTPUT);
-  digitalWrite(toneTwoPin, HIGH);
-  pinMode(toneThreePin, OUTPUT);
-  digitalWrite(toneThreePin, HIGH);  
-  pinMode(ledMatrixPin, OUTPUT);
-  digitalWrite(ledMatrixPin, LOW);
+	//Defines Inputs and Outputs
+	pinMode(solenoidPin, OUTPUT);
+	digitalWrite(solenoidPin, LOW);
+	pinMode(toneOnePin, OUTPUT);
+	digitalWrite(toneOnePin, HIGH);
+	pinMode(toneTwoPin, OUTPUT);
+	digitalWrite(toneTwoPin, HIGH);
+	pinMode(toneThreePin, OUTPUT);
+	digitalWrite(toneThreePin, HIGH);
+	pinMode(ledMatrixPin, OUTPUT);
+	digitalWrite(ledMatrixPin, LOW);
 
 
-  randomSeed(analogRead(1));
+	randomSeed(analogRead(1));
 
-  myservo.attach(8);  // attaches the servo on pin 8 to the servo object
-  myservo.write(servoHighPos);
+	myservo.attach(8);  // attaches the servo on pin 8 to the servo object
+	myservo.write(servoHighPos);
 
-  initTrialTypeArray();
-  populateTrialTypeArray();
+	initTrialTypeArray();
+	populateTrialTypeArray();
 
-  Serial.begin(115200);          //  creates serial communication at 115200 bauds
-  EstablishContact();
+	Serial.begin(115200);          //  creates serial communication at 115200 bauds
+	EstablishContact();
 
-  currentTimeMsec = millis();
-  SessionStartTime = currentTimeMsec;
-  i_loop = 0;
+	currentTimeMsec = millis();
+	SessionStartTime = currentTimeMsec;
+	i_loop = 0;
 
-  // send parameters
-  SendData(currentTimeMsec, TTL_EVT_PROGRAM_VERSION, protocol);
-  SendData(currentTimeMsec, TTL_EVT_EXPERIMENT_START, 0);
-  SendData(currentTimeMsec, TTL_EVT_ITI_MIN, itiMinDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_ITI_MAX, itiMaxDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_SOLENOID_DURATION, rewardDeliveryDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_MAX_TRIAL_NUMBER, maxTrialNumber);
-  SendData(currentTimeMsec, TTL_EVT_MAX_REWARD_NUMBER, maxRewardNumber);
-  SendData(currentTimeMsec, TTL_EVT_MAX_SESSION_DURATION, (int)(maxSessionDurationMsec / 1000));
-  SendData(currentTimeMsec, TTL_EVT_TONE1_DURATION, toneDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_TONE1_FREQ, toneOneFreq);
-  SendData(currentTimeMsec, TTL_EVT_TONE2_DURATION, toneDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_TONE2_FREQ, toneTwoFreq);
-  SendData(currentTimeMsec, TTL_EVT_TONE3_DURATION, toneDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_TONE3_FREQ, toneThreeFreq);
-  SendData(currentTimeMsec, TTL_EVT_LED_VOLTAGE_MV, ledVoltage_mv);
-  
-  SendData(currentTimeMsec, TTL_EVT_OFFER1_REW, offer1_rew);
-  SendData(currentTimeMsec, TTL_EVT_OFFER1_LIGHT, offer1_light); 
-  SendData(currentTimeMsec, TTL_EVT_OFFER2_REW, offer2_rew);
-  SendData(currentTimeMsec, TTL_EVT_OFFER2_LIGHT, offer2_light);   
-  SendData(currentTimeMsec, TTL_EVT_OFFER3_REW, offer3_rew);
-  SendData(currentTimeMsec, TTL_EVT_OFFER3_LIGHT, offer3_light);   
+	// send parameters
+	SendData(currentTimeMsec, TTL_EVT_PROGRAM_VERSION, protocol);
+	SendData(currentTimeMsec, TTL_EVT_EXPERIMENT_START, 0);
+	SendData(currentTimeMsec, TTL_EVT_ITI_MIN, itiMinDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_ITI_MAX, itiMaxDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_SOLENOID_DURATION, rewardDeliveryDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_MAX_TRIAL_NUMBER, maxTrialNumber);
+	SendData(currentTimeMsec, TTL_EVT_MAX_REWARD_NUMBER, maxRewardNumber);
+	SendData(currentTimeMsec, TTL_EVT_MAX_SESSION_DURATION, (int)(maxSessionDurationMsec / 1000));
+	SendData(currentTimeMsec, TTL_EVT_TONE1_DURATION, toneDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_TONE1_FREQ, toneOneFreq);
+	SendData(currentTimeMsec, TTL_EVT_TONE2_DURATION, toneDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_TONE2_FREQ, toneTwoFreq);
+	SendData(currentTimeMsec, TTL_EVT_TONE3_DURATION, toneDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_TONE3_FREQ, toneThreeFreq);
+	SendData(currentTimeMsec, TTL_EVT_LED_VOLTAGE_MV, ledVoltage_mv);
 
-  SendData(currentTimeMsec, TTL_EVT_AFTERTONEDELAYMSEC, (int)afterToneDelayMsec);
-  SendData(currentTimeMsec, TTL_EVT_RESPONSEDURATIONMSEC, (int)reponsePeriodDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_AFTERDECISIONDELAYMSEC, (int)afterDecisionDelayMsec);
+	SendData(currentTimeMsec, TTL_EVT_OFFER1_REW, offer1_rew);
+	SendData(currentTimeMsec, TTL_EVT_OFFER1_LIGHT, offer1_light);
+	SendData(currentTimeMsec, TTL_EVT_OFFER2_REW, offer2_rew);
+	SendData(currentTimeMsec, TTL_EVT_OFFER2_LIGHT, offer2_light);
+	SendData(currentTimeMsec, TTL_EVT_OFFER3_REW, offer3_rew);
+	SendData(currentTimeMsec, TTL_EVT_OFFER3_LIGHT, offer3_light);
 
-  delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
-  SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
-  SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
-  delay1 = currentTimeMsec + delay1;
-  state = stateITI;
-  SendData(currentTimeMsec, TTL_EVT_STATE, state);
+	SendData(currentTimeMsec, TTL_EVT_AFTERTONEDELAYMSEC, (int)afterToneDelayMsec);
+	SendData(currentTimeMsec, TTL_EVT_RESPONSEDURATIONMSEC, (int)reponsePeriodDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_AFTERDECISIONDELAYMSEC, (int)afterDecisionDelayMsec);
 
-  SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
-  myservo.write(servoLowPos);
+	delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
+	SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
+	SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
+	delay1 = currentTimeMsec + delay1;
+	state = stateITI;
+	SendData(currentTimeMsec, TTL_EVT_STATE, state);
+
+	SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
+	myservo.write(servoLowPos);
 
 }
 
 
 void loop()
 {
-  currentTimeMsec = millis();
-  event = 0;
-  //////////////////////////////////////////////////////////////////////////////////////////
-  if (event == 0)
-  {
-    detect_EOD();
-  }
-  //////////////////////////////////////////////////////////////////////////////////////////
-  if (event == 0)
-  {
-    detect_EOD2();
-  }  
-  //////////////////////////////////////////////////////////////////////////////////////////
-  if (event == 0)
-  {
-    detect_LICK();
-    //detect_LICK2();
-  }
-  //////////////////////////////////////////////////////////////////////////////////////////
+	currentTimeMsec = millis();
+	event = 0;
+	//////////////////////////////////////////////////////////////////////////////////////////
+	if (event == 0)
+	{
+		detect_EOD();
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////
+	if (event == 0)
+	{
+		detect_EOD2();
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////
+	if (event == 0)
+	{
+		detect_LICK();
+		//detect_LICK2();
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////
 
-  switch (state)
-  {
-    case stateITI :
-      switch (event)
-      {
-        case evt_EOD :
-          SendData(currentTimeMsec, TTL_EVT_ITI_OFF, delay1);
-          expDone = checkIfExpDone();
-          if (expDone)
-          {
-            state = stateExpDone;
-            SendData(currentTimeMsec, TTL_EVT_STATE, state);
-            SendData(currentTimeMsec, TTL_EVT_EXPERIMENT_STOP, 0);
-          }
-          else
-          {
-            if (state < stateExpDone)
-            {
-              nTrials++;
-              SendData(currentTimeMsec, TTL_EVT_TRIAL_START, nTrials);
-              trialType = trialTypeArray[nTrials - 1];
-              SendData(currentTimeMsec, TTL_EVT_TRIALTYPE, trialType);
-              switch (trialType)
-              {
-                case 0:
-                  SendData(currentTimeMsec, TTL_EVT_TONE2_ON, 0);
-                  digitalWrite(toneTwoPin, LOW);
-                  break;
-                case 1:
-                  SendData(currentTimeMsec, TTL_EVT_TONE1_ON, 0);
-                  digitalWrite(toneOnePin, LOW);
-                  break;
-                case 2:
-                  SendData(currentTimeMsec, TTL_EVT_TONE3_ON, 0);
-                  digitalWrite(toneThreePin, LOW);
-                  break;
-              }
-              delay1 = toneDurationMsec + currentTimeMsec;
-              state = stateToneOn;
-              SendData(currentTimeMsec, TTL_EVT_STATE, state);
-            }
-          }
-          break;
-      }
-      break;
+	switch (state)
+	{
+		case stateITI :
+			switch (event)
+			{
+				case evt_EOD :
+					SendData(currentTimeMsec, TTL_EVT_ITI_OFF, delay1);
+					expDone = checkIfExpDone();
+					if (expDone)
+					{
+						state = stateExpDone;
+						SendData(currentTimeMsec, TTL_EVT_STATE, state);
+						SendData(currentTimeMsec, TTL_EVT_EXPERIMENT_STOP, 0);
+					}
+					else
+					{
+						if (state < stateExpDone)
+						{
+							nTrials++;
+							SendData(currentTimeMsec, TTL_EVT_TRIAL_START, nTrials);
+							trialType = trialTypeArray[nTrials - 1];
+							SendData(currentTimeMsec, TTL_EVT_TRIALTYPE, trialType);
+							switch (trialType)
+							{
+								case 0:
+									SendData(currentTimeMsec, TTL_EVT_TONE2_ON, 0);
+									digitalWrite(toneTwoPin, LOW);
+									break;
+								case 1:
+									SendData(currentTimeMsec, TTL_EVT_TONE1_ON, 0);
+									digitalWrite(toneOnePin, LOW);
+									break;
+								case 2:
+									SendData(currentTimeMsec, TTL_EVT_TONE3_ON, 0);
+									digitalWrite(toneThreePin, LOW);
+									break;
+							}
+							delay1 = toneDurationMsec + currentTimeMsec;
+							state = stateToneOn;
+							SendData(currentTimeMsec, TTL_EVT_STATE, state);
+						}
+					}
+					break;
+			}
+			break;
 
-    case stateToneOn:
-      switch (event)
-      {
-        case evt_EOD :
-          switch (trialType)
-          {
-            case 0:
-              SendData(currentTimeMsec, TTL_EVT_TONE2_OFF, 0);
-              digitalWrite(toneTwoPin, HIGH);
-              break;
-            case 1:
-              SendData(currentTimeMsec, TTL_EVT_TONE1_OFF, 0);
-              digitalWrite(toneOnePin, HIGH);
-              break;
-            case 2:
-              SendData(currentTimeMsec, TTL_EVT_TONE3_OFF, 0);
-              digitalWrite(toneThreePin, HIGH);
-              break;
-          }
-          state = stateDelayAfterTone;
-          delay1 = currentTimeMsec + afterToneDelayMsec;
-          SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          break;
-      }
-      break;
+		case stateToneOn:
+			switch (event)
+			{
+				case evt_EOD :
+					switch (trialType)
+					{
+						case 0:
+							SendData(currentTimeMsec, TTL_EVT_TONE2_OFF, 0);
+							digitalWrite(toneTwoPin, HIGH);
+							break;
+						case 1:
+							SendData(currentTimeMsec, TTL_EVT_TONE1_OFF, 0);
+							digitalWrite(toneOnePin, HIGH);
+							break;
+						case 2:
+							SendData(currentTimeMsec, TTL_EVT_TONE3_OFF, 0);
+							digitalWrite(toneThreePin, HIGH);
+							break;
+					}
+					state = stateDelayAfterTone;
+					delay1 = currentTimeMsec + afterToneDelayMsec;
+					SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					break;
+			}
+			break;
 
-    case stateDelayAfterTone:
-      switch (event)
-      {
-        case evt_EOD :
-          state = stateResponsePeriod;
-          nLicksDuringDecision = 0;
-          delay1 = reponsePeriodDurationMsec;
-          delay1 = delay1 + currentTimeMsec;
-          SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoHighPos);
-          myservo.write(servoHighPos);
-          response_made = false;
-          break;
-      }
-      break;
+		case stateDelayAfterTone:
+			switch (event)
+			{
+				case evt_EOD :
+					state = stateResponsePeriod;
+					nLicksDuringDecision = 0;
+					delay1 = reponsePeriodDurationMsec;
+					delay1 = delay1 + currentTimeMsec;
+					SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoHighPos);
+					myservo.write(servoHighPos);
+					response_made = false;
+					break;
+			}
+			break;
 
-    case stateResponsePeriod:
-      switch (event)
-      {
-        case evt_EOD :
-          SendData(currentTimeMsec, TTL_EVT_NLICK_DURING_DECISION, nLicksDuringDecision);
-          nDrops = 0; lightIntensityPWM = 0;
-          switch (trialType)
-          {
-            case 0:
-              nDrops = getDropNumber(nLicksDuringDecision, nLick1);
-              break;
-            case 1:
-              lightIntensityPWM = getLightIntensity(nLicksDuringDecision, nLick1);
-              break;
-            case 2:
-              lightIntensityPWM = getLightIntensity(nLicksDuringDecision, nLick1);
-              nDrops = getDropNumber(nLicksDuringDecision, nLick1);
-              break;
-          }
-          SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
-          myservo.write(servoLowPos);
-          delay1 = currentTimeMsec + afterDecisionDelayMsec;
-          state = stateDelayAfterDecision;
-          SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          break;
+		case stateResponsePeriod:
+			switch (event)
+			{
+				case evt_EOD :
+					SendData(currentTimeMsec, TTL_EVT_NLICK_DURING_DECISION, nLicksDuringDecision);
+					nDrops = 0; lightIntensityPWM = 0;
+					switch (trialType)
+					{
+						case 0:
+							nDrops = getDropNumber(nLicksDuringDecision, nLick1);
+							break;
+						case 1:
+							lightIntensityPWM = getLightIntensity(nLicksDuringDecision, nLick1);
+							break;
+						case 2:
+							lightIntensityPWM = getLightIntensity(nLicksDuringDecision, nLick1);
+							nDrops = getDropNumber(nLicksDuringDecision, nLick1);
+							break;
+					}
+					SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
+					myservo.write(servoLowPos);
+					delay1 = currentTimeMsec + afterDecisionDelayMsec;
+					state = stateDelayAfterDecision;
+					SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					break;
 
-        case evt_LICK :
-          nLicksDuringDecision++;
-          break;
-      }
-      break;
+				case evt_LICK :
+					nLicksDuringDecision++;
+					break;
+			}
+			break;
 
-    case stateDelayAfterDecision:
-      switch (event)
-      {
-        case evt_EOD :
-          SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoHighPos);
-          myservo.write(servoHighPos);
+		case stateDelayAfterDecision:
+			switch (event)
+			{
+				case evt_EOD :
+					SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoHighPos);
+					myservo.write(servoHighPos);
 
-            switch (trialType)
-            {
-              case 0:
-                SendData(currentTimeMsec, TTL_EVT_NDROPS, nDrops);
-                SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
-                digitalWrite(solenoidPin, HIGH);
-                delay(rewardDeliveryDurationMsec);
-                digitalWrite(solenoidPin, LOW);
-                SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
-                nDrops--;
-                state = stateWaitingFirstLick;
-                SendData(currentTimeMsec, TTL_EVT_STATE, state);
-                break;
-                
-              case 1:
-                SendData(currentTimeMsec, TTL_EVT_LED_ON, 0);
-                SendData(currentTimeMsec, TTL_EVT_LED_PWM, lightIntensityPWM);
-                SendData(currentTimeMsec, TTL_EVT_LED_DURATION, (int)lightDurationMsec);
-                analogWrite(ledMatrixPin, lightIntensityPWM);
-                delay1 = lightDurationMsec + currentTimeMsec;
-                state = stateLightOn;
-                SendData(currentTimeMsec, TTL_EVT_STATE, state);
-                break;
-                
-              case 2: 
-                SendData(currentTimeMsec, TTL_EVT_LED_ON, 0);
-                SendData(currentTimeMsec, TTL_EVT_LED_PWM, lightIntensityPWM);
-                SendData(currentTimeMsec, TTL_EVT_LED_DURATION, (int)lightDurationMsec);
-                analogWrite(ledMatrixPin, lightIntensityPWM);
-                delay2 = lightDurationMsec + currentTimeMsec;
-                SendData(currentTimeMsec, TTL_EVT_NDROPS, nDrops);
-                SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
-                digitalWrite(solenoidPin, HIGH);
-                delay(rewardDeliveryDurationMsec);
-                digitalWrite(solenoidPin, LOW);
-                SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
-                nDrops--;
-                state = stateWaitingFirstLick;
-                SendData(currentTimeMsec, TTL_EVT_STATE, state);         
-                break;
-            }
-          nLicksDuringDecision = 0;
-          break;
-      }
-      break;
+					switch (trialType)
+					{
+						case 0:
+							SendData(currentTimeMsec, TTL_EVT_NDROPS, nDrops);
+							SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
+							digitalWrite(solenoidPin, HIGH);
+							delay(rewardDeliveryDurationMsec);
+							digitalWrite(solenoidPin, LOW);
+							SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
+							nDrops--;
+							state = stateWaitingFirstLick;
+							SendData(currentTimeMsec, TTL_EVT_STATE, state);
+							break;
 
-    case stateLightOn:
-      switch (event)
-      {
-        case evt_EOD :
-          analogWrite(ledMatrixPin, 0);
-          SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);
-          SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
-          myservo.write(servoLowPos);
-          delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
-          SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
-          SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
-          delay1 = currentTimeMsec + delay1;
-          state = stateITI;
-          SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          break;
-      }
-      break;
+						case 1:
+							SendData(currentTimeMsec, TTL_EVT_LED_ON, 0);
+							SendData(currentTimeMsec, TTL_EVT_LED_PWM, lightIntensityPWM);
+							SendData(currentTimeMsec, TTL_EVT_LED_DURATION, (int)lightDurationMsec);
+							analogWrite(ledMatrixPin, lightIntensityPWM);
+							delay1 = lightDurationMsec + currentTimeMsec;
+							state = stateLightOn;
+							SendData(currentTimeMsec, TTL_EVT_STATE, state);
+							break;
 
-    case stateWaitingFirstLick:
-      switch (event)
-      {
-        
-        case evt_EOD2 :
-          analogWrite(ledMatrixPin, 0);
-          SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);         
-          break;        
-        
-        case evt_LICK :
-          delay1 = consumptionPeriodMsec + currentTimeMsec;
-          state = stateIRI;
-          SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          break;
+						case 2:
+							SendData(currentTimeMsec, TTL_EVT_LED_ON, 0);
+							SendData(currentTimeMsec, TTL_EVT_LED_PWM, lightIntensityPWM);
+							SendData(currentTimeMsec, TTL_EVT_LED_DURATION, (int)lightDurationMsec);
+							analogWrite(ledMatrixPin, lightIntensityPWM);
+							delay2 = lightDurationMsec + currentTimeMsec;
+							SendData(currentTimeMsec, TTL_EVT_NDROPS, nDrops);
+							SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
+							digitalWrite(solenoidPin, HIGH);
+							delay(rewardDeliveryDurationMsec);
+							digitalWrite(solenoidPin, LOW);
+							SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
+							nDrops--;
+							state = stateWaitingFirstLick;
+							SendData(currentTimeMsec, TTL_EVT_STATE, state);
+							break;
+					}
+					nLicksDuringDecision = 0;
+					break;
+			}
+			break;
 
-      }
-      break;
+		case stateLightOn:
+			switch (event)
+			{
+				case evt_EOD :
+					analogWrite(ledMatrixPin, 0);
+					SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);
+					SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
+					myservo.write(servoLowPos);
+					delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
+					SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
+					SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
+					delay1 = currentTimeMsec + delay1;
+					state = stateITI;
+					SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					break;
+			}
+			break;
 
-    case stateIRI:
-      switch (event)
-      {
+		case stateWaitingFirstLick:
+			switch (event)
+			{
 
-        case evt_EOD2 :
-          analogWrite(ledMatrixPin, 0);
-          SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);    
-          if (delay1==0)
-          {
-            SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
-            myservo.write(servoLowPos);
-            delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
-            SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
-            SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
-            delay1 = currentTimeMsec + delay1;
-            state = stateITI;
-            SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          }       
-          break;    
-                  
-        case evt_EOD :
-          if (nDrops > 0)
-          {
-            SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
-            digitalWrite(solenoidPin, HIGH);
-            delay(rewardDeliveryDurationMsec);
-            digitalWrite(solenoidPin, LOW);
-            SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
-            nDrops--;
-            state = stateWaitingFirstLick;
-            SendData(currentTimeMsec, TTL_EVT_STATE, state);
-          }
-          else
-          {
-            if (delay2==0)
-            {
-              SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
-              myservo.write(servoLowPos);
-              delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
-              SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
-              SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
-              delay1 = currentTimeMsec + delay1;
-              state = stateITI;
-              SendData(currentTimeMsec, TTL_EVT_STATE, state);
-            }            
-          }
-          break;
-      }
-      break;
+				case evt_EOD2 :
+					analogWrite(ledMatrixPin, 0);
+					SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);
+					break;
 
-    case stateExpDone:  // 10: End of experiment
-      delay(3600000);
-      break;
-  }
+				case evt_LICK :
+					delay1 = consumptionPeriodMsec + currentTimeMsec;
+					state = stateIRI;
+					SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					break;
 
-  //////////////////
+			}
+			break;
 
-  previousTimeMsec = currentTimeMsec;
+		case stateIRI:
+			switch (event)
+			{
 
-  i_loop++;
+				case evt_EOD2 :
+					analogWrite(ledMatrixPin, 0);
+					SendData(currentTimeMsec, TTL_EVT_LED_OFF, 0);
+					if (delay1==0)
+					{
+						SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
+						myservo.write(servoLowPos);
+						delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
+						SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
+						SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
+						delay1 = currentTimeMsec + delay1;
+						state = stateITI;
+						SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					}
+					break;
+
+				case evt_EOD :
+					if (nDrops > 0)
+					{
+						SendData(currentTimeMsec,  TTL_EVT_SOLENOID_ON, 0);
+						digitalWrite(solenoidPin, HIGH);
+						delay(rewardDeliveryDurationMsec);
+						digitalWrite(solenoidPin, LOW);
+						SendData(currentTimeMsec,  TTL_EVT_SOLENOID_OFF, 0);
+						nDrops--;
+						state = stateWaitingFirstLick;
+						SendData(currentTimeMsec, TTL_EVT_STATE, state);
+					}
+					else
+					{
+						if (delay2==0)
+						{
+							SendData(currentTimeMsec, TTL_EVT_SERVOPOSITION, servoLowPos);
+							myservo.write(servoLowPos);
+							delay1 = random(itiMinDurationMsec, itiMaxDurationMsec);
+							SendData(currentTimeMsec, TTL_EVT_ITI_ON, 0);
+							SendData(currentTimeMsec, TTL_EVT_ITI_DURATION, delay1);
+							delay1 = currentTimeMsec + delay1;
+							state = stateITI;
+							SendData(currentTimeMsec, TTL_EVT_STATE, state);
+						}
+					}
+					break;
+			}
+			break;
+
+		case stateExpDone:  // 10: End of experiment
+			delay(3600000);
+			break;
+	}
+
+	//////////////////
+
+	previousTimeMsec = currentTimeMsec;
+
+	i_loop++;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // aditional functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EstablishContact() {
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
-  }
+	while (!Serial) {
+		; // wait for serial port to connect. Needed for native USB
+	}
 
-  while (!processingIsReady) {
-    if (Serial.available() > 0) {
-      incomingByte = Serial.read();
-      Serial.println("Let's Go!");
-      processingIsReady = true;
-    }
-  }
+	while (!processingIsReady) {
+		if (Serial.available() > 0) {
+			incomingByte = Serial.read();
+			Serial.println("Let's Go!");
+			processingIsReady = true;
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 boolean checkIfExpDone()
 {
-  boolean retVal = false;
+	boolean retVal = false;
 
-  if (maxTrialNumber > 0)
-  {
-    if (nTrials >= maxTrialNumber)
-    {
-      retVal = true;
-    }
-  }
-  if (maxRewardNumber > 0)
-  {
-    if (nRewards >= maxRewardNumber)
-    {
-      retVal = true;
-    }
-  }
-  if (maxSessionDurationMsec > 0)
-  {
-    if (currentTimeMsec >= (maxSessionDurationMsec + SessionStartTime))
-    {
-      retVal = true;
-    }
-  }
+	if (maxTrialNumber > 0)
+	{
+		if (nTrials >= maxTrialNumber)
+		{
+			retVal = true;
+		}
+	}
+	if (maxRewardNumber > 0)
+	{
+		if (nRewards >= maxRewardNumber)
+		{
+			retVal = true;
+		}
+	}
+	if (maxSessionDurationMsec > 0)
+	{
+		if (currentTimeMsec >= (maxSessionDurationMsec + SessionStartTime))
+		{
+			retVal = true;
+		}
+	}
 
-  return retVal;
+	return retVal;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -657,59 +657,59 @@ boolean checkIfExpDone()
 // tabulation  the value itself
 void SendData(unsigned long time_, int code_, int val_)
 {
-  Serial.print(time_);
-  Serial.print("\t");
-  Serial.print(code_);
-  Serial.print("\t");
-  Serial.println(val_);
+	Serial.print(time_);
+	Serial.print("\t");
+	Serial.print(code_);
+	Serial.print("\t");
+	Serial.println(val_);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void detect_EOD()
 {
-  if (delay1)
-  {
-    if (currentTimeMsec >= delay1)
-    {
-      delay1 = 0;
-      event = evt_EOD;
-      SendData(currentTimeMsec, TTL_EVT_EOD, evt_EOD);
-    }
-  }
+	if (delay1)
+	{
+		if (currentTimeMsec >= delay1)
+		{
+			delay1 = 0;
+			event = evt_EOD;
+			SendData(currentTimeMsec, TTL_EVT_EOD, evt_EOD);
+		}
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void detect_EOD2()
 {
-  if (delay2)
-  {
-    if (currentTimeMsec >= delay2)
-    {
-      delay2 = 0;
-      event = evt_EOD2;
-      SendData(currentTimeMsec, TTL_EVT_EOD, evt_EOD2);
-    }
-  }
+	if (delay2)
+	{
+		if (currentTimeMsec >= delay2)
+		{
+			delay2 = 0;
+			event = evt_EOD2;
+			SendData(currentTimeMsec, TTL_EVT_EOD, evt_EOD2);
+		}
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void detect_LICK()
 {
-  int v = analogRead(lickoPin);
-  if (v > 500)
-  {
-    if (already_licking == false)
-    {
-      if (currentTimeMsec > (lastLickTime + 5))
-      {
-        event = evt_LICK;
-        SendData(currentTimeMsec, TTL_EVT_LICK, v);
-        lastLickTime = currentTimeMsec;
-      }
-    }
-    already_licking = true;
-  }
-  if (v < 400)
-  {
-    already_licking = false;
-  }
+	int v = analogRead(lickoPin);
+	if (v > 500)
+	{
+		if (already_licking == false)
+		{
+			if (currentTimeMsec > (lastLickTime + 5))
+			{
+				event = evt_LICK;
+				SendData(currentTimeMsec, TTL_EVT_LICK, v);
+				lastLickTime = currentTimeMsec;
+			}
+		}
+		already_licking = true;
+	}
+	if (v < 400)
+	{
+		already_licking = false;
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void detect_LICK2()
@@ -736,50 +736,50 @@ void detect_LICK()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void populateTrialTypeArray()
 {
-  int i;
-  for (i = 0; i < trialTypeSize; i++) {
-    trialTypeArray[i] = random(3);
-  }
+	int i;
+	for (i = 0; i < trialTypeSize; i++) {
+		trialTypeArray[i] = random(3);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void initTrialTypeArray()
 {
-  int i;
-  for (i = 0; i < trialTypeSize; i++) {
-    trialTypeArray[i] = 0;
-  }
+	int i;
+	for (i = 0; i < trialTypeSize; i++) {
+		trialTypeArray[i] = 0;
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void printTrialTypeArray()
 {
-  int i;
-  for (i = 0; i < trialTypeSize; i++) {
-    Serial.print(F("tt["));
-    Serial.print(i);
-    Serial.print(F("]="));
-    Serial.println(trialTypeArray[i]);
-  }
+	int i;
+	for (i = 0; i < trialTypeSize; i++) {
+		Serial.print(F("tt["));
+		Serial.print(i);
+		Serial.print(F("]="));
+		Serial.println(trialTypeArray[i]);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int getDropNumber(int nLicksDuringDecision_, int nLick1_)
 {
-  int nDrops_ = 0;
-  if (nLicksDuringDecision_ >= nLick1_)
-  {
-    nDrops_ = 3;
-  }
-  return (nDrops_);
+	int nDrops_ = 0;
+	if (nLicksDuringDecision_ >= nLick1_)
+	{
+		nDrops_ = 3;
+	}
+	return (nDrops_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int getLightIntensity(int nLicksDuringDecision_, int nLick1_)
 {
-  int lightIntensity_ = 1; //10 lux
-  if (nLicksDuringDecision_ >= nLick1_)
-  {
-    lightIntensity_ = 28; //59 lux
-  }
-  return ((int)(lightIntensity_));
+	int lightIntensity_ = 1; //10 lux
+	if (nLicksDuringDecision_ >= nLick1_)
+	{
+		lightIntensity_ = 28; //59 lux
+	}
+	return ((int)(lightIntensity_));
 }
 
 
